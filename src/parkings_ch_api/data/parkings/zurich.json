@@ -1,0 +1,254 @@
+{
+  "parkhaus-urania-/-uraniastrasse-3": {
+    "name": "Parkhaus Urania",
+    "latitude": 47.3739,
+    "longitude": 8.5371,
+    "total_spaces": 600,
+    "address": "Uraniastrasse 3, 8001 Zürich"
+  },
+  "parkhaus-hauptbahnhof-/-sihlquai-41": {
+    "name": "Parkhaus Hauptbahnhof",
+    "latitude": 47.3784,
+    "longitude": 8.5392,
+    "total_spaces": 400,
+    "address": "Sihlquai 41, 8005 Zürich"
+  },
+  "parkhaus-city-parking-/-gessnerallee-14": {
+    "name": "Parkhaus City Parking",
+    "latitude": 47.3737,
+    "longitude": 8.5338,
+    "total_spaces": 300,
+    "address": "Gessnerallee 14, 8001 Zürich"
+  },
+  "parkhaus-opéra-/-schillerstrasse-5": {
+    "name": "Parkhaus Opéra",
+    "latitude": 47.3664,
+    "longitude": 8.5469,
+    "total_spaces": 299,
+    "address": "Schillerstrasse 5, 8001 Zürich"
+  },
+  "parkhaus-hohe-promenade-/-raemistrasse-22a": {
+    "name": "Parkhaus Hohe Promenade",
+    "latitude": 47.3679,
+    "longitude": 8.5493,
+    "total_spaces": 530,
+    "address": "Rämistrasse 22a, 8001 Zürich"
+  },
+  "parkhaus-globus-/-loewenstrasse-50": {
+    "name": "Parkhaus Globus",
+    "latitude": 47.3726,
+    "longitude": 8.5368,
+    "total_spaces": 178,
+    "address": "Löwenstrasse 50, 8001 Zürich"
+  },
+  "parkhaus-jelmoli-/-steinmuehleplatz-1": {
+    "name": "Parkhaus Jelmoli",
+    "latitude": 47.3723,
+    "longitude": 8.5383,
+    "total_spaces": 222,
+    "address": "Steinmühleplatz 1, 8001 Zürich"
+  },
+  "parkhaus-talgarten-/-nueschelerstrasse-31": {
+    "name": "Parkhaus Talgarten",
+    "latitude": 47.3714,
+    "longitude": 8.5366,
+    "total_spaces": 110,
+    "address": "Nüschelerstrasse 31, 8001 Zürich"
+  },
+  "parkhaus-utoquai-/-faerberstrasse-6": {
+    "name": "Parkhaus Utoquai",
+    "latitude": 47.3676,
+    "longitude": 8.5466,
+    "total_spaces": 175,
+    "address": "Färberstrasse 6, 8008 Zürich"
+  },
+  "parkhaus-helvetiaplatz-/-molkenstrasse-5/9": {
+    "name": "Parkhaus Helvetiaplatz",
+    "latitude": 47.3784,
+    "longitude": 8.5271,
+    "total_spaces": 63,
+    "address": "Molkenstrasse 5/9, 8004 Zürich"
+  },
+  "parkhaus-messe-zuerich-ag-/-andreasstrasse-65": {
+    "name": "Parkhaus Messe Zürich AG",
+    "latitude": 47.4105,
+    "longitude": 8.5494,
+    "total_spaces": 2000,
+    "address": "Andreasstrasse 65, 8050 Zürich"
+  },
+  "parkhaus-pfingstweid-/-pfingstweidstrasse-1": {
+    "name": "Parkhaus Pfingstweid",
+    "latitude": 47.3883,
+    "longitude": 8.5170,
+    "total_spaces": 270,
+    "address": "Pfingstweidstrasse 1, 8005 Zürich"
+  },
+  "parkhaus-uni-irchel-/-winterthurerstrasse-181": {
+    "name": "Parkhaus Uni Irchel",
+    "latitude": 47.3994,
+    "longitude": 8.5510,
+    "total_spaces": 650,
+    "address": "Winterthurerstrasse 181, 8057 Zürich"
+  },
+  "parkhaus-center-eleven-/-sophie-taeuber-strasse-4": {
+    "name": "Parkhaus Center Eleven",
+    "latitude": 47.4125,
+    "longitude": 8.5439,
+    "total_spaces": 350,
+    "address": "Sophie-Täuber-Strasse 4, 8050 Zürich"
+  },
+  "parkhaus-crowne-plaza-/-badenerstrasse-420": {
+    "name": "Parkhaus Crowne Plaza",
+    "latitude": 47.3863,
+    "longitude": 8.5051,
+    "total_spaces": 250,
+    "address": "Badenerstrasse 420, 8004 Zürich"
+  },
+  "parkhaus-hardau-ii-/-bullingerstrasse-73": {
+    "name": "Parkhaus Hardau II",
+    "latitude": 47.3825,
+    "longitude": 8.5115,
+    "total_spaces": 340,
+    "address": "Bullingerstrasse 73, 8004 Zürich"
+  },
+  "parkhaus-parkside-/-sophie-taeuber-strasse-10": {
+    "name": "Parkhaus Parkside",
+    "latitude": 47.4122,
+    "longitude": 8.5459,
+    "total_spaces": 90,
+    "address": "Sophie-Täuber-Strasse 10, 8050 Zürich"
+  },
+  "parkhaus-p-west-/-foerrlibuckstrasse-151": {
+    "name": "Parkhaus P West",
+    "latitude": 47.3903,
+    "longitude": 8.5004,
+    "total_spaces": 400,
+    "address": "Förrlibuckstrasse 151, 8005 Zürich"
+  },
+  "parkhaus-accu-/-otto-schuetz-weg": {
+    "name": "Parkhaus Accu",
+    "latitude": 47.3960,
+    "longitude": 8.5120,
+    "total_spaces": 297,
+    "address": "Otto-Schütz-Weg, 8050 Zürich"
+  },
+  "parkhaus-albisriederplatz-/-badenerstrasse-380": {
+    "name": "Parkhaus Albisriederplatz",
+    "latitude": 47.3831,
+    "longitude": 8.5091,
+    "total_spaces": 183,
+    "address": "Badenerstrasse 380, 8004 Zürich"
+  },
+  "parkhaus-bleicherweg-/-beethovenstrasse-35": {
+    "name": "Parkhaus Bleicherweg",
+    "latitude": 47.3691,
+    "longitude": 8.5338,
+    "total_spaces": 275,
+    "address": "Beethovenstrasse 35, 8002 Zürich"
+  },
+  "parkhaus-cityport-/-affolternstrasse-56": {
+    "name": "Parkhaus Cityport",
+    "latitude": 47.3901,
+    "longitude": 8.5258,
+    "total_spaces": 196,
+    "address": "Affolternstrasse 56, 8050 Zürich"
+  },
+  "parkhaus-dorflinde-/-schwamendingenstrasse-31": {
+    "name": "Parkhaus Dorflinde",
+    "latitude": 47.4036,
+    "longitude": 8.5583,
+    "total_spaces": 98,
+    "address": "Schwamendingenstrasse 31, 8050 Zürich"
+  },
+  "parkhaus-feldegg-/-riesbachstrasse-7": {
+    "name": "Parkhaus Feldegg",
+    "latitude": 47.3610,
+    "longitude": 8.5506,
+    "total_spaces": 227,
+    "address": "Riesbachstrasse 7, 8008 Zürich"
+  },
+  "parkhaus-jungholz-/-jungholzstrasse-19": {
+    "name": "Parkhaus Jungholz",
+    "latitude": 47.3705,
+    "longitude": 8.5607,
+    "total_spaces": 304,
+    "address": "Jungholzstrasse 19, 8050 Zürich"
+  },
+  "parkhaus-max-bill-platz-/-armin-bollinger-weg": {
+    "name": "Parkhaus Max-Bill-Platz",
+    "latitude": 47.4072,
+    "longitude": 8.5391,
+    "total_spaces": 320,
+    "address": "Armin-Bollinger-Weg, 8050 Zürich"
+  },
+  "parkhaus-nordhaus-/-siewerdtstrasse-8": {
+    "name": "Parkhaus Nordhaus",
+    "latitude": 47.4141,
+    "longitude": 8.5416,
+    "total_spaces": 180,
+    "address": "Siewerdtstrasse 8, 8050 Zürich"
+  },
+  "parkhaus-octavo-/-brown-boveri-strasse-2": {
+    "name": "Parkhaus Octavo",
+    "latitude": 47.3895,
+    "longitude": 8.5173,
+    "total_spaces": 131,
+    "address": "Brown-Boveri-Strasse 2, 8050 Zürich"
+  },
+  "parkhaus-park-hyatt-/-beethovenstrasse-21": {
+    "name": "Parkhaus Park Hyatt",
+    "latitude": 47.3685,
+    "longitude": 8.5345,
+    "total_spaces": 170,
+    "address": "Beethovenstrasse 21, 8002 Zürich"
+  },
+  "parkhaus-stampfenbach-/-niklausstrasse-1": {
+    "name": "Parkhaus Stampfenbach",
+    "latitude": 47.3846,
+    "longitude": 8.5418,
+    "total_spaces": 251,
+    "address": "Niklausstrasse 1, 8006 Zürich"
+  },
+  "parkhaus-usz-nord-/-frauenklinikstrasse": {
+    "name": "Parkhaus USZ Nord",
+    "latitude": 47.3784,
+    "longitude": 8.5495,
+    "total_spaces": 320,
+    "address": "Frauenklinikstrasse, 8091 Zürich"
+  },
+  "parkhaus-zuerichhorn-/-dufourstrasse-142": {
+    "name": "Parkhaus Zürichhorn",
+    "latitude": 47.3579,
+    "longitude": 8.5528,
+    "total_spaces": 240,
+    "address": "Dufourstrasse 142, 8008 Zürich"
+  },
+  "parkplatz-theater-11-/-doerfli-/thurgauerstrasse": {
+    "name": "Parkplatz Theater 11",
+    "latitude": 47.4150,
+    "longitude": 8.5359,
+    "total_spaces": 180,
+    "address": "Dörfli-/Thurgauerstrasse, 8050 Zürich"
+  },
+  "parkplatz-usz-sued-/-gloriastrasse": {
+    "name": "Parkplatz USZ Süd",
+    "latitude": 47.3763,
+    "longitude": 8.5530,
+    "total_spaces": 90,
+    "address": "Gloriastrasse, 8091 Zürich"
+  },
+  "puls-5-parkgarage-/-giessereistrasse-18": {
+    "name": "Puls 5 Parkgarage",
+    "latitude": 47.3895,
+    "longitude": 8.5199,
+    "total_spaces": 176,
+    "address": "Giessereistrasse 18, 8005 Zürich"
+  },
+  "parkhaus-zueri-11-shopping-/-nansenstrasse-5/7": {
+    "name": "Parkhaus Züri 11 Shopping",
+    "latitude": 47.4152,
+    "longitude": 8.5509,
+    "total_spaces": 220,
+    "address": "Nansenstrasse 5/7, 8050 Zürich"
+  }
+}

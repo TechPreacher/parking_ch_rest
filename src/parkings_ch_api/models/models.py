@@ -34,6 +34,10 @@ class Parking(BaseModel):
         None,
         description="Longitude coordinate of the parking facility",
     )
+    address: str | None = Field(
+        None,
+        description="Street address of the parking facility",
+    )
     last_updated: datetime = Field(..., description="Timestamp of when the data was last updated")
 
 

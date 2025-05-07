@@ -80,6 +80,10 @@ class ZurichParkingDataSource(BaseDataSource):
             # Find all <item> elements (each represents a parking)
             items = root.findall(".//item")
             
+            # Load static parking data
+            from ..data import load_parkings_data
+            static_parkings_data = load_parkings_data(self.city_id)
+            
             for item in items:
                 # Extract data from RSS item
                 title = self._get_element_text(item, "title", "")
@@ -90,16 +94,33 @@ class ZurichParkingDataSource(BaseDataSource):
                 if not parking_data:
                     continue
                 
+                # Generate parking ID
+                parking_id = self._normalize_id(title)
+                
+                # Get additional data from static file if available
+                static_data = static_parkings_data.get(parking_id, {})
+                
+                # Create a fields dictionary that will be passed to Parking constructor
+                parking_fields = {
+                    "id": parking_id,
+                    "name": static_data.get("name", title),
+                    "city": self.city_name,
+                    "available_spaces": parking_data.get("available", 0),
+                    # Use total spaces from static data if available, otherwise use the RSS value
+                    "total_spaces": static_data.get("total_spaces", parking_data.get("total", 0)),
+                    "status": ParkingStatus.OPEN if parking_data.get("is_open", True) else ParkingStatus.CLOSED,
+                    # Use coordinates from static data if available
+                    "latitude": static_data.get("latitude"),
+                    "longitude": static_data.get("longitude"),
+                    "last_updated": datetime.now(),
+                }
+                
+                # Add address if available in static data
+                if "address" in static_data:
+                    parking_fields["address"] = static_data["address"]
+                
                 # Create parking object
-                parking = Parking(
-                    id=self._normalize_id(title),
-                    name=title,
-                    city=self.city_name,
-                    available_spaces=parking_data.get("available", 0),
-                    total_spaces=parking_data.get("total", 0),
-                    status=ParkingStatus.OPEN if parking_data.get("is_open", True) else ParkingStatus.CLOSED,
-                    last_updated=datetime.now(),
-                )
+                parking = Parking(**parking_fields)
                 
                 city.parkings.append(parking)
             
