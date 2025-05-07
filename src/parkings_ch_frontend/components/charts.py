@@ -35,11 +35,17 @@ def create_availability_chart(parkings: List[Dict[str, Any]]) -> Any:
 
     data = []
     for parking in valid_parkings:
+        # Ensure available doesn't exceed total (data consistency)
+        available = min(parking["available_spaces"], parking["total_spaces"])
+        
+        # Calculate occupied spaces (must be non-negative)
+        occupied = max(0, parking["total_spaces"] - available)
+        
         data.append(
             {
                 "name": parking["name"],
-                "available": parking["available_spaces"],
-                "occupied": parking["total_spaces"] - parking["available_spaces"],
+                "available": available,
+                "occupied": occupied,
             }
         )
 
@@ -106,9 +112,14 @@ def create_occupancy_gauge_chart(parking: Dict[str, Any]) -> Any:
         return fig
     
     # Normal case with both total and available spaces
+    # Ensure available doesn't exceed total (data consistency)
+    available = min(parking["available_spaces"], parking["total_spaces"])
+    
+    # Calculate occupancy percentage (must be between 0-100%)
     occupancy_percentage = (
-        (parking["total_spaces"] - parking["available_spaces"]) / parking["total_spaces"] * 100
+        (parking["total_spaces"] - available) / parking["total_spaces"] * 100
     )
+    occupancy_percentage = max(0, min(100, occupancy_percentage))
 
     fig = px.pie(
         values=[occupancy_percentage, 100 - occupancy_percentage],

@@ -239,11 +239,19 @@ def main() -> None:
                 with col3:
                     # Handle case when total_spaces is 0 or not available
                     if parking["total_spaces"] > 0:
+                        # Ensure available_spaces doesn't exceed total_spaces (data consistency)
+                        available = min(parking["available_spaces"], parking["total_spaces"])
+                        
+                        # Calculate occupancy percentage
                         occupancy_percentage = (
-                            (parking["total_spaces"] - parking["available_spaces"]) 
+                            (parking["total_spaces"] - available) 
                             / parking["total_spaces"] * 100
                         )
-                        st.progress(min(occupancy_percentage / 100, 1.0))
+                        
+                        # Ensure percentage is between 0 and 100
+                        occupancy_percentage = max(0, min(100, occupancy_percentage))
+                        
+                        st.progress(occupancy_percentage / 100)
                         st.write(f"{occupancy_percentage:.1f}% occupied")
                     else:
                         st.info("Total capacity not available")

@@ -1,0 +1,114 @@
+{
+  "parkhaus-elisabethen": {
+    "name": "Parkhaus Elisabethen",
+    "latitude": 47.5506254,
+    "longitude": 7.5874932,
+    "total_spaces": 840,
+    "address": "Steinentorberg 5, 4051 Basel"
+  },
+  "parkhaus-steinen": {
+    "name": "Parkhaus Steinen",
+    "latitude": 47.5524554, 
+    "longitude": 7.5858936,
+    "total_spaces": 526,
+    "address": "Steinenschanze 5, 4051 Basel"
+  },
+  "parkhaus-storchen": {
+    "name": "Parkhaus Storchen",
+    "latitude": 47.5592347,
+    "longitude": 7.58658,
+    "total_spaces": 142,
+    "address": "Fischmarkt 10, 4051 Basel"
+  },
+  "parkhaus-bad-bahnhof": {
+    "name": "Parkhaus Bad. Bahnhof",
+    "latitude": 47.5651794,
+    "longitude": 7.6089067,
+    "total_spaces": 750,
+    "address": "Schwarzwaldstrasse 160, 4058 Basel"
+  },
+  "parkhaus-rebgasse": {
+    "name": "Parkhaus Rebgasse",
+    "latitude": 47.5607142,
+    "longitude": 7.594263,
+    "total_spaces": 250,
+    "address": "Rebgasse 20, 4058 Basel"
+  },
+  "parkhaus-post-basel": {
+    "name": "Parkhaus Post Basel",
+    "latitude": 47.5468617,
+    "longitude": 7.5929374,
+    "total_spaces": 350,
+    "address": "Gartenstrasse 143, 4052 Basel"
+  },
+  "parkhaus-centralbahn": {
+    "name": "Parkhaus Centralbahn",
+    "latitude": 47.547299,
+    "longitude": 7.5922975,
+    "total_spaces": 287,
+    "address": "Gartenstrasse 150, 4052 Basel"
+  },
+  "parkhaus-bahnhof-sued": {
+    "name": "Parkhaus Bahnhof Süd",
+    "latitude": 47.5458851,
+    "longitude": 7.5884556,
+    "total_spaces": 100,
+    "address": "Güterstrasse 115, 4053 Basel"
+  },
+  "parkhaus-anfos": {
+    "name": "Parkhaus Anfos",
+    "latitude": 47.5515968,
+    "longitude": 7.593512,
+    "total_spaces": 165,
+    "address": "Henric Petri-Strasse 21, 4051 Basel"
+  },
+  "parkhaus-city": {
+    "name": "Parkhaus City",
+    "latitude": 47.561101,
+    "longitude": 7.5824076,
+    "total_spaces": 1114,
+    "address": "Schanzenstrasse 48, 4056 Basel"
+  },
+  "parkhaus-clarahuus": {
+    "name": "Parkhaus Clarahuus",
+    "latitude": 47.5622725,
+    "longitude": 7.5917937,
+    "total_spaces": 52,
+    "address": "Webergasse 34, 4058 Basel"
+  },
+  "parkhaus-aeschen": {
+    "name": "Parkhaus Aeschen",
+    "latitude": 47.5504299,
+    "longitude": 7.5943046,
+    "total_spaces": 95,
+    "address": "Aeschengraben 9, 4051 Basel"
+  },
+  "parkhaus-kunstmuseum": {
+    "name": "Parkhaus Kunstmuseum",
+    "latitude": 47.5545146,
+    "longitude": 7.5927014,
+    "total_spaces": 350,
+    "address": "St. Alban-Graben 3, 4051 Basel"
+  },
+  "parkhaus-messe": {
+    "name": "Parkhaus Messe",
+    "latitude": 47.563241,
+    "longitude": 7.602175,
+    "total_spaces": 727,
+    "address": "Riehenstrasse 101, 4058 Basel"
+  },
+  "parkhaus-europe": {
+    "name": "Parkhaus Europe",
+    "latitude": 47.5630411,
+    "longitude": 7.5967098,
+    "total_spaces": 120,
+    "address": "Hammerstrasse 68, 4057 Basel"
+  },
+  "parkhaus-claramatte": {
+    "name": "Parkhaus Claramatte",
+    "latitude": 47.5639644,
+    "longitude": 7.5946604,
+    "total_spaces": 120,
+    "address": "Klingentalstrasse 25, 4057 Basel"
+  }
+}

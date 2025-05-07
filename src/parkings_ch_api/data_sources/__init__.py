@@ -1,6 +1,7 @@
 """Data sources package for parking data."""
 
 from ..core.data_source import DataSourceRegistry
+from .basel import BaselParkingDataSource
 from .bern import BernParkingDataSource
 from .zurich import ZurichParkingDataSource
 
@@ -10,3 +11,4 @@ registry = DataSourceRegistry()
 # Register data sources
 registry.register(ZurichParkingDataSource())
 registry.register(BernParkingDataSource())
+registry.register(BaselParkingDataSource())
