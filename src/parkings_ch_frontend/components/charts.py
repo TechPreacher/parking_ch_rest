@@ -22,8 +22,13 @@ def create_availability_chart(parkings: List[Dict[str, Any]]) -> Any:
     # Filter out parkings without required data
     valid_parkings = [
         p for p in parkings 
-        if "total_spaces" in p and "available_spaces" in p and p["total_spaces"] > 0
+        if "available_spaces" in p
     ]
+    
+    # For parkings with missing or zero total_spaces, we'll only show available
+    for p in valid_parkings:
+        if "total_spaces" not in p or p["total_spaces"] <= 0:
+            p["total_spaces"] = p["available_spaces"]  # Use available as total if total is not valid
     
     if not valid_parkings:
         return None
@@ -71,13 +76,36 @@ def create_occupancy_gauge_chart(parking: Dict[str, Any]) -> Any:
     Returns:
         Any: Plotly figure or None if insufficient data
     """
-    if (
-        "total_spaces" not in parking
-        or "available_spaces" not in parking
-        or parking["total_spaces"] == 0
-    ):
+    if "available_spaces" not in parking:
         return None
-
+        
+    # Handle case when total_spaces is missing or zero
+    if "total_spaces" not in parking or parking["total_spaces"] <= 0:
+        # Create a simplified chart just showing available spaces
+        fig = px.pie(
+            values=[1],
+            names=["Available"],
+            color=["green"],
+            hole=0.7,
+            title=f"{parking['name']} - Available Spaces",
+        )
+        
+        # Add text in the center
+        fig.update_layout(
+            annotations=[
+                dict(
+                    text=f"{parking['available_spaces']}<br>Available",
+                    x=0.5,
+                    y=0.5,
+                    font_size=20,
+                    showarrow=False,
+                )
+            ]
+        )
+        
+        return fig
+    
+    # Normal case with both total and available spaces
     occupancy_percentage = (
         (parking["total_spaces"] - parking["available_spaces"]) / parking["total_spaces"] * 100
     )

@@ -43,6 +43,14 @@ class City(BaseModel):
     id: str = Field(..., description="Unique identifier for the city")
     name: str = Field(..., description="Name of the city")
     country_code: str = Field(default="CH", description="Country code (ISO 3166-1 alpha-2)")
+    latitude: float | None = Field(
+        None,
+        description="Latitude coordinate of the city center",
+    )
+    longitude: float | None = Field(
+        None,
+        description="Longitude coordinate of the city center",
+    )
     parkings: list[Parking] = Field(
         default_factory=list,
         description="List of parking facilities in the city",

@@ -22,11 +22,20 @@ async def get_cities() -> CityList:
     logger.info("Getting list of cities")
     cities = []
     
+    # Import city data utility
+    from ..data import load_cities_data
+    cities_data = load_cities_data()
+    
     for source in registry.get_all_sources():
+        city_id = source.city_id
+        city_data = cities_data.get(city_id, {})
+        
         cities.append(
             City(
-                id=source.city_id,
+                id=city_id,
                 name=source.city_name,
+                latitude=city_data.get("latitude"),
+                longitude=city_data.get("longitude"),
                 last_updated=source.last_updated,
             )
         )
@@ -61,7 +70,19 @@ async def get_city_parkings(
         raise HTTPException(status_code=404, detail=f"City not found: {city_id}")
     
     try:
-        return await source.get_data()
+        # Get city coordinates from JSON data
+        from ..data import get_city_details
+        city_details = get_city_details(city_id) or {}
+        
+        # Get parking data from data source
+        city = await source.get_data()
+        
+        # Add coordinates if available
+        if city_details:
+            city.latitude = city_details.get("latitude")
+            city.longitude = city_details.get("longitude")
+            
+        return city
     except DataSourceError as e:
         logger.error(f"Error getting parking data: {str(e)}")
         raise HTTPException(status_code=503, detail=f"Error getting parking data: {str(e)}")
@@ -103,6 +124,40 @@ async def get_parking(
                 
         logger.warning(f"Parking not found: {parking_id}")
         raise HTTPException(status_code=404, detail=f"Parking not found: {parking_id}")
+    except DataSourceError as e:
+        logger.error(f"Error getting parking data: {str(e)}")
+        raise HTTPException(status_code=503, detail=f"Error getting parking data: {str(e)}")
+
+
+@router.get(
+    "/cities/{city_id}/parkings",
+    response_model=list[Parking],
+    summary="Get all parkings for a specific city",
+)
+async def get_city_parkings_list(
+    city_id: str = Path(..., description="City ID"),
+) -> list[Parking]:
+    """Get all parkings for a specific city.
+    
+    Args:
+        city_id: City identifier
+        
+    Returns:
+        list[Parking]: List of parking data for the city
+        
+    Raises:
+        HTTPException: If city is not found or data cannot be retrieved
+    """
+    logger.info(f"Getting parkings list for city: {city_id}")
+    
+    source = registry.get_source(city_id)
+    if not source:
+        logger.warning(f"City not found: {city_id}")
+        raise HTTPException(status_code=404, detail=f"City not found: {city_id}")
+    
+    try:
+        city = await source.get_data()
+        return city.parkings
     except DataSourceError as e:
         logger.error(f"Error getting parking data: {str(e)}")
         raise HTTPException(status_code=503, detail=f"Error getting parking data: {str(e)}")

@@ -25,34 +25,60 @@ def create_parking_map(
 
     # Add markers for each parking
     for parking in parkings:
-        if (
-            "total_spaces" not in parking
-            or "available_spaces" not in parking
-            or parking["total_spaces"] == 0
-        ):
+        # Skip parking without available_spaces
+        if "available_spaces" not in parking:
             continue
 
-        occupancy = 1 - (parking["available_spaces"] / parking["total_spaces"])
-        color = "green"
-        if occupancy > 0.7:
-            color = "orange"
-        if occupancy > 0.9:
-            color = "red"
+        # Determine marker color based on occupancy or available spaces
+        if "total_spaces" in parking and parking["total_spaces"] > 0:
+            # Calculate occupancy when total spaces is available
+            occupancy = 1 - (parking["available_spaces"] / parking["total_spaces"])
+            color = "green"
+            if occupancy > 0.7:
+                color = "orange"
+            if occupancy > 0.9:
+                color = "red"
+            
+            # Show both available and total spaces
+            availability_text = f"<p><b>Available:</b> {parking['available_spaces']} / {parking['total_spaces']}</p>"
+        else:
+            # With missing total, use a default color based on available spaces
+            # More than 20 available = green, less than 5 = red, otherwise orange
+            if parking["available_spaces"] > 20:
+                color = "green"
+            elif parking["available_spaces"] < 5:
+                color = "red"
+            else:
+                color = "orange"
+            
+            # Show only available spaces
+            availability_text = f"<p><b>Available:</b> {parking['available_spaces']}</p>"
 
         # Create popup HTML content
         popup_content = f"""
         <div style="width:200px">
             <h4>{parking['name']}</h4>
             <p>{parking.get('address', 'Address not available')}</p>
-            <p><b>Available:</b> {parking['available_spaces']} / {parking['total_spaces']}</p>
+            {availability_text}
             <p><b>Last Updated:</b> {parking.get('last_updated', 'Unknown')}</p>
         </div>
         """
 
         # Get coordinates with fallbacks
-        lat = parking.get("latitude", city_location[0])
-        lon = parking.get("longitude", city_location[1])
-
+        lat = parking.get("latitude")
+        lon = parking.get("longitude")
+        
+        # Skip this parking if coordinates are missing
+        if lat is None or lon is None:
+            # Use city location as fallback coordinates
+            lat = city_location[0]
+            lon = city_location[1]
+            
+            # Add a note about missing coordinates to the popup
+            popup_content += """
+            <p><i>Note: Exact location not available, showing city center</i></p>
+            """
+            
         folium.Marker(
             location=[lat, lon],
             popup=folium.Popup(popup_content),
