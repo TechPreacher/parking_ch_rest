@@ -33,7 +33,8 @@ class ZurichParkingDataSource(BaseDataSource):
         Raises:
             DataSourceError: If data fetching or parsing fails
         """
-        from ..core.errors import DataFetchError, DataParseError, handle_data_source_error
+        from ..core.errors import (DataFetchError, DataParseError,
+                                   handle_data_source_error)
         
         try:
             logger.info(f"Fetching parking data from {ZURICH_PARKING_URL}")
@@ -138,21 +139,19 @@ class ZurichParkingDataSource(BaseDataSource):
         }
         
         try:
-            # Example description format: "Freie Parkplätze: 123 von 500"
-            parts = description.split(":")
+            # Example description format: "open / 234"
+            parts = description.split("/")
             if len(parts) < 2:
                 return result
                 
-            count_parts = parts[1].strip().split(" von ")
-            if len(count_parts) != 2:
-                return result
                 
-            available = int(count_parts[0].strip())
-            total = int(count_parts[1].strip())
+            available = int(parts[1].strip())
+            open_status = parts[0].strip().lower()
+            total = 0 # Unknown for Zurich
             
             result["available"] = available
             result["total"] = total
-            result["is_open"] = available > 0
+            result["is_open"] = True if open_status == "open" else False
             
         except (ValueError, IndexError):
             logger.warning(f"Could not parse description: {description}")
