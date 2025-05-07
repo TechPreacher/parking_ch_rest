@@ -1,0 +1,66 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run FastAPI server",
+            "type": "shell",
+            "command": "poetry run python ${workspaceFolder}/src/main.py",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run Streamlit frontend",
+            "type": "shell",
+            "command": "poetry run streamlit run ${workspaceFolder}/src/streamlit_app.py",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "label": "Run both API and Streamlit",
+            "dependsOrder": "parallel",
+            "dependsOn": [
+                "Run FastAPI server",
+                "Run Streamlit frontend"
+            ],
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "Run all tests",
+            "type": "shell",
+            "command": "poetry run pytest -vv tests/",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run RUFF linter",
+            "type": "shell",
+            "command": "poetry run ruff check .",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run MyPy type checker",
+            "type": "shell",
+            "command": "poetry run mypy src",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run All Quality Checks",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Run RUFF linter",
+                "Run MyPy type checker",
+                "Run all tests"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}
