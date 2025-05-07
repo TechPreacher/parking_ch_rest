@@ -1,0 +1,121 @@
+{
+  "parkhaus-metro": {
+    "name": "Parkhaus Metro",
+    "latitude": 46.9475,
+    "longitude": 7.4392,
+    "total_spaces": 425,
+    "address": "Zeughausgasse 20, 3011 Bern"
+  },
+  "parkhaus-bahnhof": {
+    "name": "Parkhaus Bahnhof",
+    "latitude": 46.9489,
+    "longitude": 7.4402,
+    "total_spaces": 600,
+    "address": "Parkterrasse 10, 3012 Bern"
+  },
+  "parkhaus-rathaus": {
+    "name": "Parkhaus Rathaus",
+    "latitude": 46.9472,
+    "longitude": 7.4482,
+    "total_spaces": 483,
+    "address": "Rathausgasse 61, 3011 Bern"
+  },
+  "parkhaus-casino": {
+    "name": "Parkhaus Casino",
+    "latitude": 46.9463,
+    "longitude": 7.4523,
+    "total_spaces": 448,
+    "address": "Herrengasse 25, 3011 Bern"
+  },
+  "parkhaus-bundesplatz": {
+    "name": "Parkhaus Bundesplatz",
+    "latitude": 46.9471,
+    "longitude": 7.4441,
+    "total_spaces": 419,
+    "address": "Amthausgasse 40, 3011 Bern"
+  },
+  "parkhaus-welle": {
+    "name": "Parkhaus Welle",
+    "latitude": 46.9435,
+    "longitude": 7.4213,
+    "total_spaces": 190,
+    "address": "Europaplatz 10, 3008 Bern"
+  },
+  "parkhaus-city-west": {
+    "name": "Parkhaus City West",
+    "latitude": 46.9470,
+    "longitude": 7.4325,
+    "total_spaces": 554,
+    "address": "Hirschengraben 17, 3011 Bern"
+  },
+  "parkhaus-schaenzli": {
+    "name": "Parkhaus Schänzli",
+    "latitude": 46.9396,
+    "longitude": 7.4500,
+    "total_spaces": 150,
+    "address": "Viktoriastrasse 21, 3013 Bern"
+  },
+  "parkhaus-marzili": {
+    "name": "Parkhaus Marzili",
+    "latitude": 46.9427,
+    "longitude": 7.4434,
+    "total_spaces": 150,
+    "address": "Marzilistrasse 2a, 3005 Bern"
+  },
+  "parkhaus-baerenpark": {
+    "name": "Parkhaus Bärenpark",
+    "latitude": 46.9512,
+    "longitude": 7.4571,
+    "total_spaces": 310,
+    "address": "Aareufer 21, 3011 Bern"
+  },
+  "parkhaus-aespliz": {
+    "name": "Parkhaus Äspliz",
+    "latitude": 46.9519,
+    "longitude": 7.4347,
+    "total_spaces": 200,
+    "address": "Standstrasse 32, 3014 Bern"
+  },
+  "parkhaus-neufeld-p+r": {
+    "name": "Parkhaus Neufeld P+R",
+    "latitude": 46.9610,
+    "longitude": 7.4224,
+    "total_spaces": 600,
+    "address": "Neubrückstrasse 92, 3012 Bern"
+  },
+  "parkhaus-wankdorf-center": {
+    "name": "Parkhaus Wankdorf Center",
+    "latitude": 46.9623,
+    "longitude": 7.4639,
+    "total_spaces": 1500,
+    "address": "Papiermühlestrasse 85, 3014 Bern"
+  },
+  "parkhaus-stade-de-suisse": {
+    "name": "Parkhaus Stade de Suisse",
+    "latitude": 46.9628,
+    "longitude": 7.4654,
+    "total_spaces": 680,
+    "address": "Papiermühlestrasse 83, 3014 Bern"
+  },
+  "parkhaus-insel-spital": {
+    "name": "Parkhaus Insel Spital",
+    "latitude": 46.9512,
+    "longitude": 7.4259,
+    "total_spaces": 1200,
+    "address": "Freiburgstrasse 18, 3010 Bern"
+  },
+  "parkhaus-mobiliar": {
+    "name": "Parkhaus Mobiliar",
+    "latitude": 46.9480,
+    "longitude": 7.4450,
+    "total_spaces": 90,
+    "address": "Bundesgasse 18, 3011 Bern"
+  },
+  "parkhaus-kursaal": {
+    "name": "Parkhaus Kursaal",
+    "latitude": 46.9475,
+    "longitude": 7.4610,
+    "total_spaces": 257,
+    "address": "Kornhausstrasse 3, 3013 Bern"
+  }
+}
