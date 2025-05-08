@@ -24,6 +24,7 @@ This project provides real-time information about parking spaces availability in
 - **Pydantic-Settings**: Configuration management using Pydantic
 - **Folium**: Interactive map visualization
 - **Plotly**: Interactive charts and graphs
+- **Docker**: Containerization for easy deployment
 
 ## Getting Started
 
@@ -31,6 +32,7 @@ This project provides real-time information about parking spaces availability in
 
 - Python 3.10 or higher
 - Poetry package manager
+- Docker and Docker Compose (for containerized deployment)
 
 ### Installation
 
@@ -53,7 +55,9 @@ This project provides real-time information about parking spaces availability in
 
 ### Running the Application
 
-#### Run the API server:
+#### Standard Method
+
+**Run the API server:**
 
 ```bash
 poetry run python src/main.py
@@ -61,13 +65,38 @@ poetry run python src/main.py
 
 The API will be available at http://127.0.0.1:8000
 
-#### Run the Streamlit dashboard:
+**Run the Streamlit dashboard:**
 
 ```bash
 poetry run streamlit run src/streamlit_app.py
 ```
 
 The dashboard will be available at http://127.0.0.1:8501
+
+#### Using Docker (Recommended for Production)
+
+Build and start both the API and Streamlit dashboard containers:
+
+```bash
+docker-compose up -d
+```
+
+- API will be available at http://localhost:8000
+- Streamlit dashboard will be available at http://localhost:8501
+
+To stop the containers:
+
+```bash
+docker-compose down
+```
+
+To rebuild the containers after code changes:
+
+```bash
+docker-compose up -d --build
+```
+
+Note: The Dockerfiles use `requirements.txt` for dependency management instead of Poetry, making the container builds more reliable. If you update dependencies in `pyproject.toml`, remember to update `requirements.txt` accordingly.
 
 ### API Documentation
 
@@ -101,8 +130,12 @@ parkings_ch_rest/
 │       ├── api_client.py        # API client for Streamlit
 │       └── components/          # UI components
 │
-└── tests/                       # Test suite
-    └── ...
+├── tests/                       # Test suite
+│   └── ...
+│
+├── Dockerfile.api               # Dockerfile for API server
+├── Dockerfile.streamlit         # Dockerfile for Streamlit dashboard
+└── docker-compose.yml           # Docker Compose configuration
 ```
 
 ## Adding New Data Sources

@@ -1,6 +1,6 @@
-"""Frontend utilities for Streamlit app.
+"""Frontend API client for Docker environment.
 
-This module contains utilities to be used by the Streamlit frontend.
+This module contains a simplified API client for use in the Docker environment.
 """
 
 import os
@@ -8,38 +8,19 @@ from typing import Any
 
 import httpx
 
-try:
-    # Try to import settings from the API module
-    from parkings_ch_api.config.settings import get_settings
-    settings_available = True
-except ImportError:
-    # If settings are not available, we'll use environment variables
-    settings_available = False
+# Get API host and port from environment variables
+API_HOST = os.environ.get("APP_HOST", "api")
+API_PORT = int(os.environ.get("APP_PORT", "8000"))
+REQUEST_TIMEOUT = int(os.environ.get("APP_REQUEST_TIMEOUT", "10"))
 
 
-class ApiClient:
-    """Client for interacting with the Parking API."""
+class DockerApiClient:
+    """Client for interacting with the Parking API in Docker environment."""
 
     def __init__(self) -> None:
         """Initialize the API client."""
-        # Check if API_URL environment variable is set (used in Docker)
-        api_url = os.environ.get("APP_API_URL")
-        
-        if api_url:
-            # Use environment variables (Docker environment)
-            self.base_url = f"{api_url}/api/v1"
-            self.timeout = httpx.Timeout(int(os.environ.get("APP_REQUEST_TIMEOUT", "10")))
-        elif settings_available:
-            # Use settings from API module (local development)
-            settings = get_settings()
-            self.base_url = f"http://{settings.host}:{settings.port}/api/v1"
-            self.timeout = httpx.Timeout(settings.request_timeout)
-        else:
-            # Fallback to default values
-            host = os.environ.get("APP_HOST", "localhost")
-            port = os.environ.get("APP_PORT", "8000")
-            self.base_url = f"http://{host}:{port}/api/v1"
-            self.timeout = httpx.Timeout(10)
+        self.base_url = f"http://{API_HOST}:{API_PORT}/api/v1"
+        self.timeout = httpx.Timeout(REQUEST_TIMEOUT)
 
     async def get_cities(self) -> list[dict[str, Any]]:
         """Get list of supported cities.

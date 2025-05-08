@@ -8,13 +8,19 @@ This module serves as the entry point for the Streamlit web application.
 
 import asyncio
 import datetime
+import os
 import random
 from collections.abc import Awaitable, Callable
 from typing import Any, TypeVar, cast
 
 import streamlit as st
 
-from parkings_ch_frontend.api_client import ApiClient
+# Use the Docker API client in Docker environment
+if os.environ.get("USE_DOCKER_CLIENT") == "1":
+    from parkings_ch_frontend.docker_api_client import DockerApiClient as ApiClient
+else:
+    from parkings_ch_frontend.api_client import ApiClient
+
 from parkings_ch_frontend.components.charts import (
     create_availability_chart,
     create_trend_chart,
