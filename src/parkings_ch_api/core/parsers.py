@@ -1,9 +1,8 @@
 """Base parser classes for different data formats."""
 
-import abc
-from typing import Any, Dict, List, Protocol, TypeVar
+from typing import Any, Protocol, TypeVar
 
-from ..models.models import City, Parking, ParkingStatus
+from ..models.models import City
 from ..utils.logging import setup_logging
 
 logger = setup_logging(__name__)
@@ -58,20 +57,24 @@ class XmlRssParser:
                 id=self.city_id,
                 name=self.city_name,
                 parkings=[],
+                latitude=None,
+                longitude=None,
+                last_updated=None,
             )
-            
-            # Parse XML
-            root = etree.fromstring(xml_data.encode("utf-8"))
-            
-            # This is a placeholder implementation
+
+            # Parse XML - this is a placeholder implementation
+            _ = etree.fromstring(xml_data.encode("utf-8"))
+
+            # Process parsed XML data
             # Each specific data source will need to customize this
             # to extract data according to its specific XML structure
             logger.debug("Parsing XML data")
-            
+
             return city
         except Exception as e:
-            logger.error(f"Error parsing XML data: {str(e)}")
-            raise ValueError(f"Failed to parse XML data: {str(e)}") from e
+            logger.error(f"Error parsing XML data: {e!s}")
+            error_msg = f"Failed to parse XML data: {e!s}"
+            raise ValueError(error_msg) from e
 
 
 class JsonParser:
@@ -87,7 +90,7 @@ class JsonParser:
         self.city_id = city_id
         self.city_name = city_name
 
-    def parse(self, json_data: Dict[str, Any]) -> City:
+    def parse(self, json_data: dict[str, Any]) -> City:
         """Parse JSON data into a City object.
 
         Args:
@@ -105,17 +108,21 @@ class JsonParser:
                 id=self.city_id,
                 name=self.city_name,
                 parkings=[],
+                latitude=None,
+                longitude=None,
+                last_updated=None,
             )
-            
+
             # This is a placeholder implementation
             # Each specific data source will need to customize this
             # to extract data according to its specific JSON structure
             logger.debug("Parsing JSON data")
-            
+
             return city
         except Exception as e:
-            logger.error(f"Error parsing JSON data: {str(e)}")
-            raise ValueError(f"Failed to parse JSON data: {str(e)}") from e
+            logger.error(f"Error parsing JSON data: {e!s}")
+            error_msg = f"Failed to parse JSON data: {e!s}"
+            raise ValueError(error_msg) from e
 
 
 class CsvParser:
@@ -144,22 +151,23 @@ class CsvParser:
             ValueError: If CSV parsing fails
         """
         try:
-            import csv
-            from io import StringIO
-
             # Create empty city object
             city = City(
                 id=self.city_id,
                 name=self.city_name,
                 parkings=[],
+                latitude=None,
+                longitude=None,
+                last_updated=None,
             )
-            
+
             # This is a placeholder implementation
             # Each specific data source will need to customize this
             # to extract data according to its specific CSV structure
             logger.debug("Parsing CSV data")
-            
+
             return city
         except Exception as e:
-            logger.error(f"Error parsing CSV data: {str(e)}")
-            raise ValueError(f"Failed to parse CSV data: {str(e)}") from e
+            logger.error(f"Error parsing CSV data: {e!s}")
+            error_msg = f"Failed to parse CSV data: {e!s}"
+            raise ValueError(error_msg) from e

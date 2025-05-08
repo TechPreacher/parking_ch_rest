@@ -1,6 +1,6 @@
 """Map components for Streamlit frontend."""
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 import folium
 import streamlit as st
@@ -9,7 +9,8 @@ from streamlit_folium import folium_static
 
 
 def create_parking_map(
-    parkings: List[Dict[str, Any]], city_location: Tuple[float, float]
+    parkings: list[dict[str, Any]],
+    city_location: tuple[float, float],
 ) -> folium.Map:
     """Create a folium map with parking markers.
 
@@ -38,7 +39,7 @@ def create_parking_map(
                 color = "orange"
             if occupancy > 0.9:
                 color = "red"
-            
+
             # Show both available and total spaces
             availability_text = f"<p><b>Available:</b> {parking['available_spaces']} / {parking['total_spaces']}</p>"
         else:
@@ -50,35 +51,35 @@ def create_parking_map(
                 color = "red"
             else:
                 color = "orange"
-            
+
             # Show only available spaces
             availability_text = f"<p><b>Available:</b> {parking['available_spaces']}</p>"
 
         # Create popup HTML content
         popup_content = f"""
         <div style="width:200px">
-            <h4>{parking['name']}</h4>
-            <p>{parking.get('address', 'Address not available')}</p>
+            <h4>{parking["name"]}</h4>
+            <p>{parking.get("address", "Address not available")}</p>
             {availability_text}
-            <p><b>Last Updated:</b> {parking.get('last_updated', 'Unknown')}</p>
+            <p><b>Last Updated:</b> {parking.get("last_updated", "Unknown")}</p>
         </div>
         """
 
         # Get coordinates with fallbacks
         lat = parking.get("latitude")
         lon = parking.get("longitude")
-        
+
         # Skip this parking if coordinates are missing
         if lat is None or lon is None:
             # Use city location as fallback coordinates
             lat = city_location[0]
             lon = city_location[1]
-            
+
             # Add a note about missing coordinates to the popup
             popup_content += """
             <p><i>Note: Exact location not available, showing city center</i></p>
             """
-            
+
         folium.Marker(
             location=[lat, lon],
             popup=folium.Popup(popup_content),
@@ -89,7 +90,10 @@ def create_parking_map(
 
 
 def display_map(
-    parkings: List[Dict[str, Any]], city_location: Tuple[float, float], width: int = 1000, height: int = 600
+    parkings: list[dict[str, Any]],
+    city_location: tuple[float, float],
+    width: int = 1000,
+    height: int = 600,
 ) -> None:
     """Display the parking map in the Streamlit app.
 

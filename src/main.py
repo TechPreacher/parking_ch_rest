@@ -2,7 +2,6 @@
 
 import uvicorn
 
-from parkings_ch_api import create_app
 from parkings_ch_api.config.settings import get_settings
 
 

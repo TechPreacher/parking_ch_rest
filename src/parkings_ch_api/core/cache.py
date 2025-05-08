@@ -1,7 +1,7 @@
 """Cache implementation for data sources."""
 
 import time
-from typing import Any, Dict, Generic, TypeVar
+from typing import Generic, TypeVar
 
 from ..config.settings import get_settings
 from ..utils.logging import setup_logging
@@ -15,7 +15,7 @@ class Cache(Generic[T]):
 
     def __init__(self) -> None:
         """Initialize an empty cache."""
-        self._cache: Dict[str, tuple[T, float]] = {}
+        self._cache: dict[str, tuple[T, float]] = {}
         self._settings = get_settings()
 
     def get(self, key: str) -> T | None:

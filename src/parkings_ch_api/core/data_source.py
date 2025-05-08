@@ -80,7 +80,7 @@ class BaseDataSource(abc.ABC):
     @property
     def cache_key(self) -> str:
         """Return the cache key for this data source.
-        
+
         Returns:
             str: Cache key
         """
@@ -88,10 +88,10 @@ class BaseDataSource(abc.ABC):
 
     async def get_data(self) -> City:
         """Get data for the city, using cache if available.
-        
+
         Returns:
             City: City with parking data
-            
+
         Raises:
             Exception: If data fetching fails
         """
@@ -99,14 +99,14 @@ class BaseDataSource(abc.ABC):
         cached_data = self._cache.get(self.cache_key)
         if cached_data:
             return cached_data
-            
+
         # If not in cache, fetch fresh data
         data = await self.fetch_data()
         self._last_updated = datetime.now()
-        
+
         # Update cache
         self._cache.set(self.cache_key, data)
-        
+
         return data
 
     @abc.abstractmethod
@@ -115,7 +115,7 @@ class BaseDataSource(abc.ABC):
 
         Returns:
             City: City object with parking data.
-            
+
         Raises:
             Exception: If data fetching fails
         """

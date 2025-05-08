@@ -1,12 +1,12 @@
 """Lucerne parking data source implementation."""
 
 from datetime import datetime
-from typing import Dict, Any
+from typing import Any
 
 from ..core.data_source import BaseDataSource
 from ..models.models import City, Parking, ParkingStatus
-from ..utils.lucerne_api import fetch_lucerne_parking_data
 from ..utils.logging import setup_logging
+from ..utils.lucerne_api import fetch_lucerne_parking_data
 
 logger = setup_logging(__name__)
 
@@ -100,7 +100,7 @@ class LucerneParkingDataSource(BaseDataSource):
             except (ValueError, DataFetchError, DataParseError) as e:
                 # Log error and return a city with no available parking data
                 logger.error(
-                    f"Error fetching real-time data: {str(e)}. Real-time data unavailable."
+                    f"Error fetching real-time data: {e!s}. Real-time data unavailable.",
                 )
 
                 # Return city with unavailable status
@@ -111,7 +111,9 @@ class LucerneParkingDataSource(BaseDataSource):
             raise handle_data_source_error(e, self.name)
 
     def _add_missing_parkings(
-        self, city: City, static_parkings_data: Dict[str, Dict[str, Any]]
+        self,
+        city: City,
+        static_parkings_data: dict[str, dict[str, Any]],
     ) -> None:
         """Add parkings from static data that aren't in the API data.
 

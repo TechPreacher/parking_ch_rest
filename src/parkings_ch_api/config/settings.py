@@ -66,13 +66,3 @@ def get_settings() -> Settings:
         Settings: Application settings
     """
     return Settings()
-
-
-@lru_cache
-def get_settings() -> Settings:
-    """Get application settings singleton.
-
-    Returns:
-        Settings: Application settings
-    """
-    return Settings()

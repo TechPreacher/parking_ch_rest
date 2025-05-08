@@ -47,5 +47,40 @@
         "total_spaces": 280,
         "latitude": 47.0555,
         "longitude": 8.3256
+    },
+    "parkhaus-sportgebaude": {
+        "name": "Parkplatz Sportgebäude",
+        "address": "Allmend, 6005 Luzern",
+        "total_spaces": 200,
+        "latitude": 47.0365,
+        "longitude": 8.3043
+    },
+    "parkhaus-allmend-p3": {
+        "name": "Allmend P3",
+        "address": "Allmend, 6005 Luzern",
+        "total_spaces": 180,
+        "latitude": 47.0372,
+        "longitude": 8.3067
+    },
+    "parkhaus-allmend-messe-p2": {
+        "name": "Allmend/Messe P2",
+        "address": "Allmend, 6005 Luzern",
+        "total_spaces": 300,
+        "latitude": 47.0380,
+        "longitude": 8.3075
+    },
+    "parkhaus-schweizerhof": {
+        "name": "Parkhaus Schweizerhof",
+        "address": "Schweizerhofquai, 6002 Luzern",
+        "total_spaces": 400,
+        "latitude": 47.0522,
+        "longitude": 8.3110
+    },
+    "parkhaus-city-parking": {
+        "name": "City-Parking",
+        "address": "Hirschengraben, 6003 Luzern",
+        "total_spaces": 315,
+        "latitude": 47.0487,
+        "longitude": 8.3073
     }
 }

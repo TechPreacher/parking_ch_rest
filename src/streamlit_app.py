@@ -1,34 +1,33 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """Streamlit frontend for the Swiss Parking API.
 
 This module serves as the entry point for the Streamlit web application.
 """
 
 import asyncio
-import json
-from typing import Any
+from collections.abc import Awaitable, Callable
+from typing import Any, TypeVar
 
-import pandas as pd
 import streamlit as st
 
-from parkings_ch_api.config.settings import get_settings
 from parkings_ch_frontend.api_client import ApiClient
 from parkings_ch_frontend.components.charts import (
     create_availability_chart,
-    create_occupancy_gauge_chart,
     create_trend_chart,
 )
 from parkings_ch_frontend.components.map import display_map
 
+# Type variable for generic decorator
+T = TypeVar('T')
+
 
 # Helper function to run async functions in Streamlit
-def async_to_sync(async_func):
+def async_to_sync(async_func: Callable[..., Awaitable[T]]) -> Callable[..., T]:
     """Decorator to run async functions in Streamlit."""
     import functools
 
     @functools.wraps(async_func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs) -> T:
         loop = asyncio.new_event_loop()
         try:
             result = loop.run_until_complete(async_func(*args, **kwargs))
@@ -37,6 +36,7 @@ def async_to_sync(async_func):
         return result
 
     return wrapper
+
 
 # Configure the page
 st.set_page_config(
@@ -54,19 +54,21 @@ def get_cities() -> list[dict[str, Any]]:
     Returns:
         list[dict[str, Any]]: List of city information
     """
+
     @async_to_sync
-    async def fetch_cities():
+    async def fetch_cities() -> list[dict[str, Any]]:
         client = ApiClient()
         try:
             response = await client.get_cities()
-            # Extract cities from the response - the API returns a CityList object with a cities field
+            # Extract cities from the response - the API returns a CityList object
+            # with a cities field
             if isinstance(response, dict) and "cities" in response:
                 return response["cities"]
-            else:
-                st.error(f"Unexpected response format: {response}")
-                raise ValueError("Invalid API response format")
+            st.error(f"Unexpected response format: {response}")
+            error_msg = "Invalid API response format"
+            raise ValueError(error_msg)
         except Exception as e:
-            st.error(f"Error fetching cities: {str(e)}")
+            st.error(f"Error fetching cities: {e!s}")
             # Fallback to hardcoded data if API is unavailable
             return [
                 {"id": "zurich", "name": "Zürich", "latitude": 47.3769, "longitude": 8.5417},
@@ -75,7 +77,7 @@ def get_cities() -> list[dict[str, Any]]:
                 {"id": "geneva", "name": "Geneva", "latitude": 46.2044, "longitude": 6.1432},
                 {"id": "lausanne", "name": "Lausanne", "latitude": 46.5197, "longitude": 6.6323},
             ]
-    
+
     return fetch_cities()
 
 
@@ -89,6 +91,7 @@ def get_parkings(city_id: str) -> list[dict[str, Any]]:
     Returns:
         list[dict[str, Any]]: List of parking information
     """
+
     @async_to_sync
     async def fetch_parkings(city_id: str) -> list[dict[str, Any]]:
         client = ApiClient()
@@ -103,11 +106,11 @@ def get_parkings(city_id: str) -> list[dict[str, Any]]:
                     if "address" not in parking:
                         parking["address"] = f"{parking['name']}, {parking['city']}"
                 return response
-            else:
-                st.error(f"Unexpected response format: {response}")
-                raise ValueError("Invalid API response format")
+            st.error(f"Unexpected response format: {response}")
+            error_msg = "Invalid API response format"
+            raise ValueError(error_msg)
         except Exception as e:
-            st.error(f"Error fetching parking data: {str(e)}")
+            st.error(f"Error fetching parking data: {e!s}")
             # Fallback to hardcoded data if API is unavailable
             if city_id == "zurich":
                 return [
@@ -143,7 +146,7 @@ def get_parkings(city_id: str) -> list[dict[str, Any]]:
                     },
                 ]
             return []
-            
+
     return fetch_parkings(city_id)
 
 
@@ -157,32 +160,32 @@ def main() -> None:
     cities = get_cities()
     city_names = [city["name"] for city in cities]
     city_ids = [city["id"] for city in cities]
-    city_dict = dict(zip(city_names, city_ids))
-    
+    city_dict = dict(zip(city_names, city_ids, strict=False))
+
     selected_city_name = st.sidebar.selectbox("Select a city", city_names, key="city_selector")
     selected_city_id = city_dict[selected_city_name]
-    
+
     # Get selected city information
     selected_city = next((city for city in cities if city["id"] == selected_city_id), cities[0])
-    
+
     # Get parking information for the selected city
     parkings = get_parkings(selected_city_id)
-    
+
     # Display tabs for different views
     tab1, tab2, tab3 = st.tabs(["Map View", "Chart View", "List View"])
-    
+
     with tab1:
         st.header(f"Parking Map for {selected_city_name}")
         if parkings:
             display_map(
-                parkings, 
+                parkings,
                 (selected_city["latitude"], selected_city["longitude"]),
                 width=1000,
                 height=600,
             )
         else:
             st.write("No parking data available for this city")
-    
+
     with tab2:
         st.header("Parking Availability")
         if parkings:
@@ -191,28 +194,38 @@ def main() -> None:
                 st.plotly_chart(fig, use_container_width=True, key="availability_chart")
             else:
                 st.info("Could not create chart: insufficient data available.")
-            
+
             # Add historical trend chart (demo with static data)
             st.subheader("Availability Trend (24h)")
-            st.info("This is a demonstration with simulated data. In a production environment, this would show real historical data.")
-            
+            st.info(
+                "This is a demonstration with simulated data. "
+                "In a production environment, this would show real historical data.",
+            )
+
             # Simulate historical data for the first parking
             if parkings:
                 import datetime
                 import random
-                
+
                 parking = parkings[0]
                 history = []
-                
+
                 now = datetime.datetime.now()
                 for i in range(24, -1, -1):
-                    history.append({
-                        "timestamp": (now - datetime.timedelta(hours=i)).isoformat(),
-                        "available_spaces": max(0, min(parking["total_spaces"], 
-                                               int(parking["available_spaces"] + random.randint(-50, 50)))),
-                        "total_spaces": parking["total_spaces"],
-                    })
-                
+                    history.append(
+                        {
+                            "timestamp": (now - datetime.timedelta(hours=i)).isoformat(),
+                            "available_spaces": max(
+                                0,
+                                min(
+                                    parking["total_spaces"],
+                                    int(parking["available_spaces"] + random.randint(-50, 50)),
+                                ),
+                            ),
+                            "total_spaces": parking["total_spaces"],
+                        },
+                    )
+
                 trend_fig = create_trend_chart(history, parking["name"])
                 if trend_fig is not None:
                     st.plotly_chart(trend_fig, use_container_width=True, key="trend_chart")
@@ -220,7 +233,7 @@ def main() -> None:
                     st.info("Could not create trend chart: insufficient data available.")
         else:
             st.write("No parking data available for this city")
-    
+
     with tab3:
         st.header("List of Parkings")
         if parkings:
@@ -232,25 +245,26 @@ def main() -> None:
                         st.write(parking["address"])
                 with col2:
                     st.metric(
-                        "Available Spaces", 
+                        "Available Spaces",
                         parking["available_spaces"],
-                        f"{parking['available_spaces'] - 100}" if parking['id'] == 'parking1' else None,
+                        f"{parking['available_spaces'] - 100}"
+                        if parking["id"] == "parking1"
+                        else None,
                     )
                 with col3:
                     # Handle case when total_spaces is 0 or not available
                     if parking["total_spaces"] > 0:
                         # Ensure available_spaces doesn't exceed total_spaces (data consistency)
                         available = min(parking["available_spaces"], parking["total_spaces"])
-                        
+
                         # Calculate occupancy percentage
                         occupancy_percentage = (
-                            (parking["total_spaces"] - available) 
-                            / parking["total_spaces"] * 100
+                            (parking["total_spaces"] - available) / parking["total_spaces"] * 100
                         )
-                        
+
                         # Ensure percentage is between 0 and 100
                         occupancy_percentage = max(0, min(100, occupancy_percentage))
-                        
+
                         st.progress(occupancy_percentage / 100)
                         st.write(f"{occupancy_percentage:.1f}% occupied")
                     else:
@@ -258,19 +272,19 @@ def main() -> None:
                 st.write("---")
         else:
             st.write("No parking data available for this city")
-    
+
     # Add footer
     st.sidebar.markdown("---")
     st.sidebar.info(
         """
         **About this app**
-        
+
         This application shows real-time information about parking availability in Swiss cities.
-        
+
         Data is refreshed every 5 minutes.
-        
+
         Created by Sascha Corti
-        """
+        """,
     )
 
 
