@@ -1,0 +1,51 @@
+{
+    "parkhaus-altstadt": {
+        "name": "Parkhaus Altstadt",
+        "address": "Kasernenplatz, 6003 Luzern",
+        "total_spaces": 300,
+        "latitude": 47.0530,
+        "longitude": 8.3066
+    },
+    "parkhaus-bahnhof": {
+        "name": "Parkhaus Bahnhof",
+        "address": "Zentralstrasse, 6003 Luzern",
+        "total_spaces": 560,
+        "latitude": 47.0502,
+        "longitude": 8.3101
+    },
+    "parkhaus-kesselturm": {
+        "name": "Parkhaus Kesselturm",
+        "address": "Mühlenplatz 14, 6004 Luzern",
+        "total_spaces": 271,
+        "latitude": 47.0530,
+        "longitude": 8.3081
+    },
+    "parkhaus-sempacherstrasse": {
+        "name": "Parkhaus Sempacherstrasse",
+        "address": "Sempacherstrasse 22, 6003 Luzern",
+        "total_spaces": 600,
+        "latitude": 47.0470,
+        "longitude": 8.3145
+    },
+    "parkhaus-europagarage": {
+        "name": "Parkhaus Europagarage",
+        "address": "Inseliquai, 6005 Luzern",
+        "total_spaces": 440,
+        "latitude": 47.0528,
+        "longitude": 8.3131
+    },
+    "parkhaus-musegg": {
+        "name": "Parkhaus Musegg",
+        "address": "Baselstrasse 1, 6003 Luzern",
+        "total_spaces": 295,
+        "latitude": 47.0537,
+        "longitude": 8.3035
+    },
+    "parkhaus-casino-palace": {
+        "name": "Parkhaus Casino Palace",
+        "address": "Haldenstrasse 6, 6006 Luzern",
+        "total_spaces": 280,
+        "latitude": 47.0555,
+        "longitude": 8.3256
+    }
+}
