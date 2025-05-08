@@ -35,7 +35,7 @@ RUN echo '#!/bin/bash' > /app/start.sh && \
     chmod +x /app/start.sh
 
 # Expose the port
-EXPOSE 8501
+EXPOSE 80
 
 # Run the application
 CMD ["/app/start.sh"]

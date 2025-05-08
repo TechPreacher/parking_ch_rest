@@ -24,7 +24,7 @@ services:
       dockerfile: Dockerfile.streamlit
     container_name: parking-streamlit
     ports:
-      - "8501:8501"
+      - "80:8501"
     environment:
       - APP_HOST=api
       - APP_PORT=8000
