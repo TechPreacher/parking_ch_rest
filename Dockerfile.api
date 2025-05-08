@@ -2,12 +2,10 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Set environment variables
+# Set Python environment variables (app settings will come from Docker Compose)
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PYTHONPATH=/app \
-    APP_HOST=0.0.0.0 \
-    APP_PORT=8000
+    PYTHONPATH=/app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -25,8 +23,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY src/ ./src/
 
-# Expose the port
+# Expose default port - this is just documentation
+# Actual port can be set with the APP_PORT environment variable
 EXPOSE 8000
 
-# Use uvicorn to run the application
-CMD ["uvicorn", "src.parkings_ch_api:app", "--host", "0.0.0.0", "--port", "8000"]
+# Create a startup script that uses environment variables
+RUN echo '#!/bin/bash' > /app/start-api.sh && \
+    echo 'uvicorn src.parkings_ch_api:app --host ${APP_HOST} --port ${APP_PORT}' >> /app/start-api.sh && \
+    chmod +x /app/start-api.sh
+
+# Use uvicorn to run the application with environment variables
+CMD ["/app/start-api.sh"]

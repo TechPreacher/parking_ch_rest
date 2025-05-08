@@ -1,6 +1,7 @@
 """Frontend utilities for Streamlit app.
 
 This module contains utilities to be used by the Streamlit frontend.
+It works in both local development and Docker environments using environment variables.
 """
 
 import os
@@ -9,7 +10,7 @@ from typing import Any
 import httpx
 
 try:
-    # Try to import settings from the API module
+    # Try to import settings from the API module (local development)
     from parkings_ch_api.config.settings import get_settings
     settings_available = True
 except ImportError:
@@ -18,28 +19,40 @@ except ImportError:
 
 
 class ApiClient:
-    """Client for interacting with the Parking API."""
+    """Client for interacting with the Parking API.
+    
+    This client handles both local development and containerized environments
+    by checking for environment variables and falling back to settings module.
+    """
 
     def __init__(self) -> None:
-        """Initialize the API client."""
-        # Check if API_URL environment variable is set (used in Docker)
+        """Initialize the API client with configuration from environment variables or settings."""
+        # Get configuration from environment variables with fallbacks
         api_url = os.environ.get("APP_API_URL")
+        request_timeout = int(os.environ.get("APP_REQUEST_TIMEOUT", "10"))
         
         if api_url:
-            # Use environment variables (Docker environment)
+            # Direct API URL is provided (highest priority)
             self.base_url = f"{api_url}/api/v1"
-            self.timeout = httpx.Timeout(int(os.environ.get("APP_REQUEST_TIMEOUT", "10")))
-        elif settings_available:
-            # Use settings from API module (local development)
-            settings = get_settings()
-            self.base_url = f"http://{settings.host}:{settings.port}/api/v1"
-            self.timeout = httpx.Timeout(settings.request_timeout)
         else:
-            # Fallback to default values
-            host = os.environ.get("APP_HOST", "localhost")
-            port = os.environ.get("APP_PORT", "8000")
-            self.base_url = f"http://{host}:{port}/api/v1"
-            self.timeout = httpx.Timeout(10)
+            # Construct URL from host and port
+            host = os.environ.get("APP_HOST")
+            port = os.environ.get("APP_PORT")
+            
+            if host and port:
+                # Environment variables are available
+                self.base_url = f"http://{host}:{port}/api/v1"
+            elif settings_available:
+                # Use settings from API module (local development)
+                settings = get_settings()
+                self.base_url = f"http://{settings.host}:{settings.port}/api/v1"
+                request_timeout = settings.request_timeout
+            else:
+                # Fallback to default values
+                self.base_url = "http://localhost:8000/api/v1"
+        
+        # Set request timeout
+        self.timeout = httpx.Timeout(request_timeout)
 
     async def get_cities(self) -> list[dict[str, Any]]:
         """Get list of supported cities.

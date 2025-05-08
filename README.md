@@ -75,14 +75,35 @@ The dashboard will be available at http://127.0.0.1:8501
 
 #### Using Docker (Recommended for Production)
 
+First, you can configure environment variables by creating a `.env` file:
+
+```bash
+cp .env.example .env
+```
+
+Then edit the `.env` file to customize your settings:
+
+```
+# API Configuration
+API_HOST=0.0.0.0                # Internal host binding
+API_PORT=8000                   # Internal container port
+API_PUBLISHED_PORT=8000         # External published port
+API_LOG_LEVEL=INFO
+API_SERVICE_NAME=api            # Service name for internal reference
+
+# Streamlit Configuration
+STREAMLIT_PORT=8501             # Internal container port
+STREAMLIT_PUBLISHED_PORT=80     # External published port
+```
+
 Build and start both the API and Streamlit dashboard containers:
 
 ```bash
 docker-compose up -d
 ```
 
-- API will be available at http://localhost:8000
-- Streamlit dashboard will be available at http://localhost:8501
+- API will be available at http://localhost:{API_PUBLISHED_PORT} (default: 8000)
+- Streamlit dashboard will be available at http://localhost:{STREAMLIT_PUBLISHED_PORT} (default: 80)
 
 To stop the containers:
 
@@ -94,6 +115,18 @@ To rebuild the containers after code changes:
 
 ```bash
 docker-compose up -d --build
+```
+
+#### Running in Azure or Other Cloud Environments
+
+When deploying to Azure or other cloud environments, you can configure the ports and hosts by setting environment variables. This allows you to adapt the containers to your specific infrastructure requirements without code changes.
+
+Example Azure deployment with custom ports:
+```bash
+export API_PUBLISHED_PORT=5000
+export STREAMLIT_PUBLISHED_PORT=5001
+export API_SERVICE_NAME=parkingapi
+docker-compose up -d
 ```
 
 Note: The Dockerfiles use `requirements.txt` for dependency management instead of Poetry, making the container builds more reliable. If you update dependencies in `pyproject.toml`, remember to update `requirements.txt` accordingly.

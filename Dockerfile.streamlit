@@ -2,13 +2,10 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Set environment variables
+# Set Python environment variables (app settings will come from Docker Compose)
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PYTHONPATH=/app \
-    APP_HOST=api \
-    APP_PORT=8000 \
-    APP_API_URL=http://api:8000
+    PYTHONPATH=/app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -26,16 +23,19 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY src/ ./src/
 
-# Create a simple wrapper script
+# Expose default port - this is just documentation
+# Actual port can be set with the STREAMLIT_PORT environment variable
+EXPOSE 8501
+
+# Create a simple wrapper script that uses environment variables
 RUN echo '#!/bin/bash' > /app/start.sh && \
     echo 'echo "Waiting for API service to be ready..."' >> /app/start.sh && \
     echo 'sleep 5' >> /app/start.sh && \
-    echo 'curl --retry 5 --retry-delay 2 --retry-connrefused http://api:8000/api/v1/health || echo "API not ready, but continuing anyway"' >> /app/start.sh && \
-    echo 'exec streamlit run src/streamlit_app.py --server.port=8501 --server.address=0.0.0.0' >> /app/start.sh && \
+    echo 'curl --retry 5 --retry-delay 2 --retry-connrefused http://${APP_HOST}:${APP_PORT}/api/v1/health || echo "API not ready, but continuing anyway"' >> /app/start.sh && \
+    echo 'PORT=${STREAMLIT_PORT:-8501}' >> /app/start.sh && \
+    echo 'echo "Starting Streamlit on port $PORT"' >> /app/start.sh && \
+    echo 'exec streamlit run src/streamlit_app.py --server.port=$PORT --server.address=0.0.0.0' >> /app/start.sh && \
     chmod +x /app/start.sh
-
-# Expose the port
-EXPOSE 80
 
 # Run the application
 CMD ["/app/start.sh"]

@@ -15,11 +15,8 @@ from typing import Any, TypeVar, cast
 
 import streamlit as st
 
-# Use the Docker API client in Docker environment
-if os.environ.get("USE_DOCKER_CLIENT") == "1":
-    from parkings_ch_frontend.docker_api_client import DockerApiClient as ApiClient
-else:
-    from parkings_ch_frontend.api_client import ApiClient
+# Import the API client
+from parkings_ch_frontend.api_client import ApiClient
 
 from parkings_ch_frontend.components.charts import (
     create_availability_chart,
