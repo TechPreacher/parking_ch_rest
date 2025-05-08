@@ -1,11 +1,30 @@
 """Map components for Streamlit frontend."""
 
+# Folium library lacks type stubs, handled via mypy config
+
 from typing import Any
 
 import folium
 import streamlit as st
 from folium.plugins import MarkerCluster
 from streamlit_folium import folium_static
+
+# Constants for map configuration
+DEFAULT_ZOOM_LEVEL = 14
+FALLBACK_ZOOM_LEVEL = 13
+
+# Constants for occupancy thresholds
+HIGH_OCCUPANCY_THRESHOLD = 0.7  # 70% occupancy - orange warning
+CRITICAL_OCCUPANCY_THRESHOLD = 0.9  # 90% occupancy - red warning
+
+# Constants for available spaces thresholds when total is unknown
+HIGH_AVAILABILITY_THRESHOLD = 20  # More than 20 spaces - green
+LOW_AVAILABILITY_THRESHOLD = 5  # Less than 5 spaces - red
+
+# Map marker colors
+COLOR_GREEN = "green"  # Good availability
+COLOR_ORANGE = "orange"  # Limited availability
+COLOR_RED = "red"  # Very limited availability
 
 
 def create_parking_map(
@@ -21,7 +40,7 @@ def create_parking_map(
     Returns:
         folium.Map: Map with parking markers
     """
-    m = folium.Map(location=city_location, zoom_start=14)
+    m = folium.Map(location=city_location, zoom_start=DEFAULT_ZOOM_LEVEL)
     marker_cluster = MarkerCluster().add_to(m)
 
     # Add markers for each parking
@@ -34,23 +53,25 @@ def create_parking_map(
         if "total_spaces" in parking and parking["total_spaces"] > 0:
             # Calculate occupancy when total spaces is available
             occupancy = 1 - (parking["available_spaces"] / parking["total_spaces"])
-            color = "green"
-            if occupancy > 0.7:
-                color = "orange"
-            if occupancy > 0.9:
-                color = "red"
+            color = COLOR_GREEN
+            if occupancy > HIGH_OCCUPANCY_THRESHOLD:
+                color = COLOR_ORANGE
+            if occupancy > CRITICAL_OCCUPANCY_THRESHOLD:
+                color = COLOR_RED
 
             # Show both available and total spaces
-            availability_text = f"<p><b>Available:</b> {parking['available_spaces']} / {parking['total_spaces']}</p>"
+            availability_text = (
+                f"<p><b>Available:</b> {parking['available_spaces']} / "
+                f"{parking['total_spaces']}</p>"
+            )
         else:
             # With missing total, use a default color based on available spaces
-            # More than 20 available = green, less than 5 = red, otherwise orange
-            if parking["available_spaces"] > 20:
-                color = "green"
-            elif parking["available_spaces"] < 5:
-                color = "red"
+            if parking["available_spaces"] > HIGH_AVAILABILITY_THRESHOLD:
+                color = COLOR_GREEN
+            elif parking["available_spaces"] < LOW_AVAILABILITY_THRESHOLD:
+                color = COLOR_RED
             else:
-                color = "orange"
+                color = COLOR_ORANGE
 
             # Show only available spaces
             availability_text = f"<p><b>Available:</b> {parking['available_spaces']}</p>"
@@ -109,5 +130,5 @@ def display_map(
     else:
         st.warning("No parking data available for this city")
         # Display an empty map centered on the city
-        m = folium.Map(location=city_location, zoom_start=13)
+        m = folium.Map(location=city_location, zoom_start=FALLBACK_ZOOM_LEVEL)
         folium_static(m, width=width, height=height)

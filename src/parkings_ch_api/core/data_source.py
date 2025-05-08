@@ -39,6 +39,17 @@ class DataSource(Protocol):
         """
         ...
 
+    async def get_data(self) -> City:
+        """Get data for the city, using cache if available.
+
+        Returns:
+            City: City with parking data
+
+        Raises:
+            Exception: If data fetching fails
+        """
+        ...
+
 
 class BaseDataSource(abc.ABC):
     """Base abstract class for parking data sources."""

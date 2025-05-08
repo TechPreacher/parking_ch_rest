@@ -9,7 +9,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.firefox.service import Service as FirefoxService
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
@@ -55,7 +55,8 @@ class WebDriverFactory:
 
             # User agent to avoid detection
             options.add_argument(
-                "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
+                "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36",
             )
 
             service = ChromeService(ChromeDriverManager().install())
@@ -72,7 +73,8 @@ class WebDriverFactory:
             cls._instance = webdriver.Firefox(service=firefox_service, options=firefox_options)
 
         else:
-            raise ValueError(f"Unsupported browser: {browser}")
+            err = f"Unsupported browser: {browser}"
+            raise ValueError(err)
 
         # Register cleanup function to quit the driver on exit
         atexit.register(cls.quit_driver)
@@ -137,7 +139,7 @@ def _fetch_page_content(
         # Wait for specific element if requested
         if wait_for_selector:
             WebDriverWait(driver, timeout).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, wait_for_selector)),
+                ec.presence_of_element_located((By.CSS_SELECTOR, wait_for_selector)),
             )
 
         # Return the page source

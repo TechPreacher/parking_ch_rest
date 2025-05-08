@@ -13,7 +13,7 @@ logger = setup_logging(__name__)
 
 # URL for Zurich parking data
 ZURICH_PARKING_URL = "https://www.pls-zh.ch/plsFeed/rss"
-
+MINIMUM_PARTS = 2  # Need at least 2 parts for a valid format
 
 class ZurichParkingDataSource(BaseDataSource):
     """Data source for Zurich parking data."""
@@ -37,8 +37,9 @@ class ZurichParkingDataSource(BaseDataSource):
             logger.info(f"Fetching parking data from {ZURICH_PARKING_URL}")
             xml_data = await fetch_url(ZURICH_PARKING_URL)
 
+            expected_xml_error_msg = "Expected XML string data"
             if not isinstance(xml_data, str):
-                raise DataParseError("Expected XML string data", self.name)
+                raise DataParseError(expected_xml_error_msg, self.name)
 
             city = self._parse_xml(xml_data)
             city.last_updated = datetime.now()
@@ -49,7 +50,7 @@ class ZurichParkingDataSource(BaseDataSource):
             raise
         except Exception as e:
             # Convert other exceptions to data source errors
-            raise handle_data_source_error(e, self.name)
+            raise handle_data_source_error(e, self.name) from e
 
     def _parse_xml(self, xml_data: str) -> City:
         """Parse XML data from Zurich parking RSS feed.
@@ -69,6 +70,9 @@ class ZurichParkingDataSource(BaseDataSource):
                 id=self.city_id,
                 name=self.city_name,
                 parkings=[],
+                latitude=None,
+                longitude=None,
+                last_updated=None,
             )
 
             # Parse XML
@@ -128,7 +132,8 @@ class ZurichParkingDataSource(BaseDataSource):
 
         except Exception as e:
             logger.error(f"Error parsing XML data: {e!s}")
-            raise ValueError(f"Failed to parse Zurich parking data: {e!s}") from e
+            err = f"Failed to parse Zurich parking data: {e!s}"
+            raise ValueError(err) from e
 
     def _get_element_text(self, element: etree._Element, tag_name: str, default: str = "") -> str:
         """Extract text from an XML element.
@@ -162,7 +167,7 @@ class ZurichParkingDataSource(BaseDataSource):
         try:
             # Example description format: "open / 234"
             parts = description.split("/")
-            if len(parts) < 2:
+            if len(parts) < MINIMUM_PARTS:
                 return result
 
             available = int(parts[1].strip())

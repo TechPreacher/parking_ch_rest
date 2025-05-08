@@ -402,3 +402,5 @@ FodyWeavers.xsd
 
 # Python
 .venv/
+
+**/.claude/settings.local.json

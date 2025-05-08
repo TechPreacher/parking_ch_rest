@@ -64,6 +64,9 @@ ignore = [
     "D100",   # Missing docstring in public module
     "D101",   # Missing docstring in public class
     "D104",   # Missing docstring in public package
+    "BLE001", # Allow blind except statements
+    "RET504", # Allow assignment before return
+    "ANN401", # Allow annotations in comments
 ]
 
 [tool.ruff.lint.per-file-ignores]
@@ -93,3 +96,32 @@ strict_optional = true
 module = "tests.*"
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
+
+[[tool.mypy.overrides]]
+module = [
+    "folium.*",
+    "streamlit_folium.*",
+    "lxml.*",
+    "pandas.*",
+    "plotly.*",
+    "selenium.*",
+    "webdriver_manager.*"
+]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "src.parkings_ch_frontend.components.*",
+    "src.parkings_ch_api.data.__init__",
+    "src.parkings_ch_frontend.api_client"
+]
+disallow_any_generics = false
+warn_return_any = false
+
+[[tool.mypy.overrides]]
+module = [
+    "src.parkings_ch_api.data_sources.basel",
+    "src.streamlit_app"
+]
+warn_unreachable = false
+

@@ -1,19 +1,23 @@
 """Chart components for Streamlit frontend."""
 
-from typing import Any
+from typing import Any, TypeAlias, cast
 
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
+
+# Define a type for Plotly figures
+PlotlyFigure: TypeAlias = "go.Figure | None"
 
 
-def create_availability_chart(parkings: list[dict[str, Any]]) -> Any:
+def create_availability_chart(parkings: list[dict[str, Any]]) -> PlotlyFigure:
     """Create a bar chart showing parking availability.
 
     Args:
         parkings: List of parking information
 
     Returns:
-        Any: Plotly figure or None if no data available
+        PlotlyFigure: Plotly figure or None if no data available
     """
     if not parkings:
         return None
@@ -23,7 +27,7 @@ def create_availability_chart(parkings: list[dict[str, Any]]) -> Any:
 
     # For parkings with missing or zero total_spaces, we'll only show available
     for p in valid_parkings:
-        if "total_spaces" not in p or p["total_spaces"] <= 0:
+        if "total_spaces" not in p or cast(int, p["total_spaces"]) <= 0:
             p["total_spaces"] = p[
                 "available_spaces"
             ]  # Use available as total if total is not valid
@@ -34,10 +38,10 @@ def create_availability_chart(parkings: list[dict[str, Any]]) -> Any:
     data = []
     for parking in valid_parkings:
         # Ensure available doesn't exceed total (data consistency)
-        available = min(parking["available_spaces"], parking["total_spaces"])
+        available = min(cast(int, parking["available_spaces"]), cast(int, parking["total_spaces"]))
 
         # Calculate occupied spaces (must be non-negative)
-        occupied = max(0, parking["total_spaces"] - available)
+        occupied = max(0, cast(int, parking["total_spaces"]) - available)
 
         data.append(
             {
@@ -71,20 +75,20 @@ def create_availability_chart(parkings: list[dict[str, Any]]) -> Any:
     return fig
 
 
-def create_occupancy_gauge_chart(parking: dict[str, Any]) -> Any:
+def create_occupancy_gauge_chart(parking: dict[str, Any]) -> PlotlyFigure:
     """Create a gauge chart for parking occupancy.
 
     Args:
         parking: Parking information
 
     Returns:
-        Any: Plotly figure or None if insufficient data
+        PlotlyFigure: Plotly figure or None if insufficient data
     """
     if "available_spaces" not in parking:
         return None
 
     # Handle case when total_spaces is missing or zero
-    if "total_spaces" not in parking or parking["total_spaces"] <= 0:
+    if "total_spaces" not in parking or cast(int, parking["total_spaces"]) <= 0:
         # Create a simplified chart just showing available spaces
         fig = px.pie(
             values=[1],
@@ -98,7 +102,7 @@ def create_occupancy_gauge_chart(parking: dict[str, Any]) -> Any:
         fig.update_layout(
             annotations=[
                 dict(
-                    text=f"{parking['available_spaces']}<br>Available",
+                    text=f"{cast(int, parking['available_spaces'])}<br>Available",
                     x=0.5,
                     y=0.5,
                     font_size=20,
@@ -111,10 +115,11 @@ def create_occupancy_gauge_chart(parking: dict[str, Any]) -> Any:
 
     # Normal case with both total and available spaces
     # Ensure available doesn't exceed total (data consistency)
-    available = min(parking["available_spaces"], parking["total_spaces"])
+    available = min(cast(int, parking["available_spaces"]), cast(int, parking["total_spaces"]))
 
     # Calculate occupancy percentage (must be between 0-100%)
-    occupancy_percentage = (parking["total_spaces"] - available) / parking["total_spaces"] * 100
+    total_spaces = cast(int, parking["total_spaces"])
+    occupancy_percentage = (total_spaces - available) / total_spaces * 100
     occupancy_percentage = max(0, min(100, occupancy_percentage))
 
     fig = px.pie(
@@ -141,7 +146,7 @@ def create_occupancy_gauge_chart(parking: dict[str, Any]) -> Any:
     return fig
 
 
-def create_trend_chart(parking_history: list[dict[str, Any]], parking_name: str) -> Any:
+def create_trend_chart(parking_history: list[dict[str, Any]], parking_name: str) -> PlotlyFigure:
     """Create a line chart showing parking availability trend.
 
     Args:
@@ -149,7 +154,7 @@ def create_trend_chart(parking_history: list[dict[str, Any]], parking_name: str)
         parking_name: Name of the parking
 
     Returns:
-        Any: Plotly figure or None if insufficient data
+        PlotlyFigure: Plotly figure or None if insufficient data
     """
     if not parking_history:
         return None

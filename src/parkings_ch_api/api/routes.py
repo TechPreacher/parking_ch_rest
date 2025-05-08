@@ -169,10 +169,10 @@ async def get_city_parkings_list(
 
 
 @router.get("/health", summary="Health check endpoint")
-async def health_check() -> dict:
+async def health_check() -> dict[str, str]:
     """Health check endpoint.
 
     Returns:
-        dict: Status information
+        dict[str, str]: Status information
     """
     return {"status": "ok", "version": "0.1.0"}

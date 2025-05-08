@@ -1,6 +1,6 @@
 """Base parser classes for different data formats."""
 
-from typing import Any, Protocol, TypeVar
+from typing import Protocol, TypeVar
 
 from ..models.models import City
 from ..utils.logging import setup_logging
@@ -12,7 +12,7 @@ T = TypeVar("T")
 class Parser(Protocol[T]):
     """Protocol defining the interface for data parsers."""
 
-    def parse(self, data: Any) -> T:
+    def parse(self, data: object) -> T:
         """Parse data from a source into the target format.
 
         Args:
@@ -90,7 +90,7 @@ class JsonParser:
         self.city_id = city_id
         self.city_name = city_name
 
-    def parse(self, json_data: dict[str, Any]) -> City:
+    def parse(self, json_data: dict[str, object]) -> City:
         """Parse JSON data into a City object.
 
         Args:

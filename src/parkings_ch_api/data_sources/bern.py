@@ -52,8 +52,9 @@ class BernParkingDataSource(BaseDataSource):
             # Fetch XML data
             xml_data = await fetch_url(BERN_PARKING_XML_URL)
 
+            expected_xml_error_msg = "Expected XML string data"
             if not isinstance(xml_data, str):
-                raise DataParseError("Expected XML string data", self.name)
+                raise DataParseError(expected_xml_error_msg, self.name)
 
             # Parse the XML data
             parsed_data = self._parse_xml(xml_data)
@@ -63,6 +64,8 @@ class BernParkingDataSource(BaseDataSource):
                 id=self.city_id,
                 name=self.city_name,
                 parkings=[],
+                latitude=None,
+                longitude=None,
                 last_updated=datetime.now(),
             )
 
@@ -136,9 +139,13 @@ class BernParkingDataSource(BaseDataSource):
 
             return city
 
+        except (ValueError, ConnectionError, TimeoutError) as e:
+            # Convert common exceptions to data source errors
+            raise handle_data_source_error(e, self.name) from e
         except Exception as e:
-            # Convert other exceptions to data source errors
-            raise handle_data_source_error(e, self.name)
+            # Convert unexpected exceptions to data source errors
+            logger.error(f"Unexpected error in Bern data source: {e!s}")
+            raise handle_data_source_error(e, self.name) from e
 
     def _parse_xml(self, xml_data: str) -> dict[str, tuple[int, int, bool]]:
         """Parse XML data from Bern parking feed.
@@ -188,7 +195,9 @@ class BernParkingDataSource(BaseDataSource):
                 # Store result
                 result[name] = (space_count, space_free, is_open)
 
-        except Exception as e:
+        except (ValueError, AttributeError, TypeError) as e:
             logger.error(f"Error parsing Bern XML: {e!s}")
+        except Exception as e:
+            logger.error(f"Unexpected error parsing Bern XML: {e!s}")
 
         return result

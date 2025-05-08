@@ -106,9 +106,13 @@ class LucerneParkingDataSource(BaseDataSource):
                 # Return city with unavailable status
                 return self._create_unavailable_data()
 
+        except (ValueError, ConnectionError, TimeoutError) as e:
+            # Convert common exceptions to data source errors
+            raise handle_data_source_error(e, self.name) from e
         except Exception as e:
-            # Convert other exceptions to data source errors
-            raise handle_data_source_error(e, self.name)
+            # Convert unexpected exceptions to data source errors
+            logger.error(f"Unexpected error in Lucerne data source: {e!s}")
+            raise handle_data_source_error(e, self.name) from e
 
     def _add_missing_parkings(
         self,
